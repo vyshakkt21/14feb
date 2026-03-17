@@ -25,6 +25,12 @@ steps:
     provider: 'azurerm'
     command: 'init'
     workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
+    backendServiceArm: 'wif_tf_2026'
+    backendAzureRmResourceGroupName: 'rg-vys-str'
+    backendAzureRmStorageAccountName: 'backendstorage21'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
+
 - task: TerraformTaskV1@0
   inputs:
     provider: 'azurerm'
