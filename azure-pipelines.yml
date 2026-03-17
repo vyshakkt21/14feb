@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  subscription: 79791edd-abf3-41e5-bd57-c3ec4e92be1c
+  serviceConnection: 'wif_tf_2026'
   resourceGroup: rg-vys-str
   storageAccount: backendstorage21
   container: tfstate
@@ -30,7 +30,7 @@ steps:
     provider: 'azurerm'
     command: 'init'
     workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
-    backendServiceArm: '$(subscription)'
+    backendServiceArm: '$(serviceConnection)'
     backendAzureRmResourceGroupName: '$(resourceGroup)'
     backendAzureRmStorageAccountName: '$(storageAccount)'
     backendAzureRmContainerName: '$(container)'
@@ -44,7 +44,7 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
     commandOptions: '-out=tfplan'
     # commandOptions: '-detailed-exitcode -out=tfplan'
-    environmentServiceNameAzureRM: '$(subscription)'
+    environmentServiceNameAzureRM: '$(serviceConnection)'
 
 - task: PowerShell@2
   displayName: detect any terraform change
@@ -74,4 +74,4 @@ steps:
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
     commandOptions: 'tfplan'
-    environmentServiceNameAzureRM: '$(subscription)'
+    environmentServiceNameAzureRM: '$(serviceConnection)'
