@@ -15,9 +15,9 @@ variables:
 steps:
 
 - task: TerraformInstaller@0
-  displayName: install Terraform '= 4.0.0'
+  displayName: install Terraform '4.0.0'
   inputs:
-    terraformVersion: '= 4.0.0'
+    terraformVersion: '4.0.0'
 
 - task: TerraformTaskV1@0
   displayName: terraform init
