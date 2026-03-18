@@ -1,29 +1,26 @@
-# trigger:
-# - master
 trigger: none
 
 pool:
-  vmImage: 'ubuntu-latest'
-
+  vmImage: ubuntu-latest
 
 steps:
 
 - task: TerraformInstaller@1
-  displayName: install Terraform 'latest'
+  displayName: Install Terraform
   inputs:
-    terraformVersion: 'latest'
+    terraformVersion: 1.6.6
 
-- task: TerraformTaskV1@0
-  displayName: terraform init
+- task: TerraformTaskV4@4
+  displayName: Terraform Init
   inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
-    backendServiceArm: 'wif_automatic'
-    backendAzureRmResourceGroupName: 'rg-backend'
-    backendAzureRmStorageAccountName: 'bacnendktvstr'
-    backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'terraform.tfstate'
+    provider: azurerm
+    command: init
+    workingDirectory: $(System.DefaultWorkingDirectory)/main/14feb/Linux_machine
+    backendServiceArm: wif_automatic
+    backendAzureRmResourceGroupName: rg-backend
+    backendAzureRmStorageAccountName: bacnendktvstr
+    backendAzureRmContainerName: tfstate
+    backendAzureRmKey: terraform.tfstate
     
 - task: TerraformTaskV1@0
   displayName: terraform plan -out=tfplan
