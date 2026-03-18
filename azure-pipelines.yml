@@ -30,17 +30,6 @@ steps:
     backendAzureRmStorageAccountName: 'backendstorage21'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
-
-- task: TerraformTaskV1@0
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
-    backendServiceArm: '$(serviceConnection)'
-    backendAzureRmResourceGroupName: '$(resourceGroup)'
-    backendAzureRmStorageAccountName: '$(storageAccount)'
-    backendAzureRmContainerName: '$(container)'
-    backendAzureRmKey: '$(tfstateFile)'
     
 - task: TerraformTaskV1@0
   displayName: terraform plan -out=tfplan
@@ -49,13 +38,11 @@ steps:
     command: 'plan'
     workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
     commandOptions: '-out=tfplan'
-    # commandOptions: '-detailed-exitcode -out=tfplan'
-    environmentServiceNameAzureRM: '$(serviceConnection)'
+    environmentServiceNameAzureRM: 'wif_tf_2026'
 
 - task: PowerShell@2
   displayName: detect any terraform change
   inputs:
-    workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
     targetType: 'inline'
     script: |
       # Write-Host "LASTEXITCODE : $LASTEXITCODE"
@@ -71,6 +58,7 @@ steps:
       {
         Write-Host "There is no change detected in Terraform tfplan file"
       }
+    workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
 
 - task: TerraformTaskV1@0
   displayName: terraform apply tfplan
@@ -80,4 +68,4 @@ steps:
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
     commandOptions: 'tfplan'
-    environmentServiceNameAzureRM: '$(serviceConnection)'
+    environmentServiceNameAzureRM: 'wif_tf_2026'
