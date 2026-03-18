@@ -5,6 +5,12 @@ pool:
 
 steps:
 
+- script: |
+    echo "Current directory:"
+    pwd
+    echo "List of files:"
+    ls -R
+  displayName: Debug Repository Structure
 - task: TerraformInstaller@1
   displayName: Install Terraform
   inputs:
@@ -17,7 +23,7 @@ steps:
       -backend-config="storage_account_name=bacnendktvstr" \
       -backend-config="container_name=tfstate" \
       -backend-config="key=terraform.tfstate"
-  workingDirectory: $(System.DefaultWorkingDirectory)/14feb/Linux_machine
+  workingDirectory: $(System.DefaultWorkingDirectory)/Linux_machine
   displayName: Terraform Init
     
 - task: TerraformTaskV1@0
