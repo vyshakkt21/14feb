@@ -5,17 +5,10 @@ trigger: none
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  serviceConnection: 'wif_tf_2026'
-  resourceGroup: rg-vys-str
-  storageAccount: backendstorage21
-  container: tfstate
-  tfstateFile: terraform.tfstate
-  anyTfChanges: false
 
 steps:
 
-- task: TerraformInstaller@0
+- task: TerraformInstaller@1
   displayName: install Terraform 'latest'
   inputs:
     terraformVersion: 'latest'
