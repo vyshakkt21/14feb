@@ -10,18 +10,15 @@ steps:
   inputs:
     terraformVersion: '1.6.6'
 
-- task: TerraformTaskV4@4
+- script: |
+    terraform version
+    terraform init \
+      -backend-config="resource_group_name=rg-backend" \
+      -backend-config="storage_account_name=bacnendktvstr" \
+      -backend-config="container_name=tfstate" \
+      -backend-config="key=terraform.tfstate"
+  workingDirectory: $(System.DefaultWorkingDirectory)/main/14feb/Linux_machine
   displayName: Terraform Init
-  inputs:
-    provider: azurerm
-    command: init
-    workingDirectory: $(System.DefaultWorkingDirectory)/main/14feb/Linux_machine
-    backendServiceArm: wif_automatic
-    environmentServiceNameAzureRM: wif_automatic
-    backendAzureRmResourceGroupName: rg-backend
-    backendAzureRmStorageAccountName: bacnendktvstr
-    backendAzureRmContainerName: tfstate
-    backendAzureRmKey: terraform.tfstate
     
 - task: TerraformTaskV1@0
   displayName: terraform plan -out=tfplan
