@@ -26,9 +26,9 @@ steps:
     provider: 'azurerm'
     command: 'init'
     workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
-    backendServiceArm: 'wif_tf_2026'
-    backendAzureRmResourceGroupName: 'rg-vys-str'
-    backendAzureRmStorageAccountName: 'backendstorage21'
+    backendServiceArm: 'wif_automatic'
+    backendAzureRmResourceGroupName: 'rg-backend'
+    backendAzureRmStorageAccountName: 'bacnendktvstr'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
     
@@ -69,4 +69,4 @@ steps:
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
     commandOptions: 'tfplan'
-    environmentServiceNameAzureRM: 'wif_tf_2026'
+    environmentServiceNameAzureRM: 'wif_automatic'
