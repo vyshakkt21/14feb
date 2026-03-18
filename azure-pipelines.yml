@@ -17,7 +17,7 @@ steps:
       -backend-config="storage_account_name=bacnendktvstr" \
       -backend-config="container_name=tfstate" \
       -backend-config="key=terraform.tfstate"
-  workingDirectory: $(System.DefaultWorkingDirectory)/main/14feb/Linux_machine
+  workingDirectory: $(System.DefaultWorkingDirectory)/14feb/Linux_machine
   displayName: Terraform Init
     
 - task: TerraformTaskV1@0
@@ -25,7 +25,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/14feb/Linux_machine'
     commandOptions: '-out=tfplan'
     environmentServiceNameAzureRM: 'wif_tf_2026'
 
@@ -47,7 +47,7 @@ steps:
       {
         Write-Host "There is no change detected in Terraform tfplan file"
       }
-    workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/14feb/Linux_machine'
 
 - task: TerraformTaskV1@0
   displayName: terraform apply tfplan
