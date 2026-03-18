@@ -21,6 +21,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux_machine'
     backendServiceArm: 'wif_automatic'
     backendAzureRmResourceGroupName: 'rg-backend'
     backendAzureRmStorageAccountName: 'bacnendktvstr'
