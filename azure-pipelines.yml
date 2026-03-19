@@ -4,12 +4,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: |
-    echo "Current directory:"
-    pwd
-    echo "List of files:"
-    ls -R
-    displayName: Debug Repository Structure
 
 - task: TerraformInstaller@1
   displayName: Install Terraform
