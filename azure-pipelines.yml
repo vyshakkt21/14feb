@@ -34,7 +34,7 @@ steps:
     command: 'plan'
     workingDirectory: '$(System.DefaultWorkingDirectory)/14feb/Linux_machine'
     commandOptions: '-out=tfplan'
-    environmentServiceNameAzureRM: 'wif_tf_2026'
+    environmentServiceNameAzureRM: 'wif_automatic'
 
 - task: PowerShell@2
   displayName: detect any terraform change
