@@ -16,7 +16,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux_machine'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Az_vnet'
     backendServiceArm: 'wif_automatic'
     backendAzureRmResourceGroupName: 'rg-backend'
     backendAzureRmStorageAccountName: 'bacnendktvstr'
@@ -28,7 +28,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux_machine'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Az_vnet'
     commandOptions: '-out=tfplan'
     environmentServiceNameAzureRM: 'wif_automatic'
 
@@ -36,7 +36,7 @@ steps:
   displayName: detect terraform changes
   inputs:
     targetType: 'inline'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux_machine'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Az_vnet'
     script: |
       $plan = terraform show -json tfplan | ConvertFrom-Json
       $actions = $plan.resource_changes | ForEach-Object { $_.change.actions }
@@ -51,6 +51,6 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux_machine'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Az_vnet'
     commandOptions: 'tfplan'
     environmentServiceNameAzureRM: 'wif_automatic'
