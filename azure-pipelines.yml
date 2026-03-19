@@ -10,11 +10,12 @@ steps:
     pwd
     echo "List of files:"
     ls -R
-  displayName: Debug Repository Structure
+    displayName: Debug Repository Structure
+
 - task: TerraformInstaller@1
   displayName: Install Terraform
   inputs:
-    terraformVersion: '1.6.6'
+    terraformVersion: 'latest'
 
 
 - task: TerraformTask@5
@@ -28,41 +29,35 @@ steps:
     backendAzureRmStorageAccountName: 'bacnendktvstr'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
+
 - task: TerraformTask@5
   displayName: terraform plan
   inputs:
     provider: 'azurerm'
     command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux_machine'
     commandOptions: '-out=tfplan'
     environmentServiceNameAzureRM: 'wif_automatic'
 
-
 - task: PowerShell@2
-  displayName: detect any terraform change
+  displayName: detect terraform changes
   inputs:
     targetType: 'inline'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux_machine'
     script: |
-      # Write-Host "LASTEXITCODE : $LASTEXITCODE"
-      $plan = $(terraform show -json tfplan | ConvertFrom-Json)
-      $actions = $plan.resource_changes.change.actions
-      Write-Host "Terraform actions : $actions"
-      if (($actions -contains 'create') -or ($actions -contains 'delete') -or ($actions -contains 'update'))
-      {
-        Write-Host "Terraform will perform the following actions : $actions"
-        Write-Host "##vso[task.setvariable variable=anyTfChanges;]true"
-      }
-      else
-      {
-        Write-Host "There is no change detected in Terraform tfplan file"
-      }
-    workingDirectory: '$(System.DefaultWorkingDirectory)/14feb/Linux_machine'
+      $plan = terraform show -json tfplan | ConvertFrom-Json
+      $actions = $plan.resource_changes | ForEach-Object { $_.change.actions }
 
-- task: TerraformTaskV1@0
-  displayName: terraform apply tfplan
-  condition: eq(variables.anyTfChanges, true)
+      if ($actions -contains "create" -or $actions -contains "update" -or $actions -contains "delete") {
+          Write-Host "##vso[task.setvariable variable=anyTfChanges]true"
+      }
+
+- task: TerraformTask@5
+  displayName: terraform apply
+  condition: eq(variables['anyTfChanges'], 'true')
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/main/14feb/Linux_machine'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux_machine'
     commandOptions: 'tfplan'
     environmentServiceNameAzureRM: 'wif_automatic'
