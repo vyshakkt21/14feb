@@ -18,6 +18,7 @@ steps:
 
 
 - task: TerraformTask@5
+  displayName: terraform init
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -27,14 +28,14 @@ steps:
     backendAzureRmStorageAccountName: 'bacnendktvstr'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
-- task: TerraformTaskV1@0
-  displayName: terraform plan -out=tfplan
+- task: TerraformTask@5
+  displayName: terraform plan
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/14feb/Linux_machine'
     commandOptions: '-out=tfplan'
     environmentServiceNameAzureRM: 'wif_automatic'
+
 
 - task: PowerShell@2
   displayName: detect any terraform change
